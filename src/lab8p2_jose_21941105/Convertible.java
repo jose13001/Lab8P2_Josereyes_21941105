@@ -5,10 +5,18 @@
  */
 package lab8p2_jose_21941105;
 
+import java.awt.Color;
+
 /**
  *
  * @author josec
  */
-public class Convertible {
+public class Convertible extends Auto{
+    
+    public Convertible(int identificador, int distanciaRecorrida, String nombreCorredor, Color color) {
+        super(identificador, distanciaRecorrida, nombreCorredor, color);
+        Vmin=20;
+        Vmax=200;
+    }
     
 }
