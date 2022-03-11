@@ -5,17 +5,31 @@
  */
 package lab8p2_jose_21941105;
 
+import java.awt.Color;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 /**
  *
  * @author josec
  */
 public class Carrera extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Carrera
-     */
+    Color color;
+    RandomAccessFile carros;
     public Carrera() {
+        try{
+            carros=new RandomAccessFile("carros.jc","rw");
+        }catch(FileNotFoundException e){
+            Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
+        }
         initComponents();
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -86,9 +100,19 @@ public class Carrera extends javax.swing.JFrame {
         getContentPane().add(tb_corredor, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, 120, -1));
 
         btn_color.setText("Color");
+        btn_color.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_colorActionPerformed(evt);
+            }
+        });
         getContentPane().add(btn_color, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 90, -1));
 
         btn_guardar.setText("Guardar");
+        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_guardarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btn_guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, 90, -1));
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -107,10 +131,48 @@ public class Carrera extends javax.swing.JFrame {
         btn_reiniciar.setText("Reiniciar");
         getContentPane().add(btn_reiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 430, 130, -1));
 
+        cb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "McQueen", "Convertible", "Nascar" }));
         getContentPane().add(cb_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 110, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
+        // TODO add your handling code here:
+        try{
+            int numId = Integer.parseInt(tb_numero.getText());
+            long distancia=0;
+            String nombre=tb_corredor.getText();
+            String tipo =String.valueOf(cb_tipo.getSelectedItem());
+            int RGB=color.getRGB();
+            int Vmin = (tipo.equals("McQueen")?30:((tipo.equals("Convertible"))?20:40));
+            int Vmax = (tipo.equals("McQueen")?30:((tipo.equals("Convertible"))?20:40));
+            
+            
+            if(numeroU(numId)){
+                carros.writeInt(numId);
+                carros.writeLong(distancia);
+                carros.writeUTF(nombre);
+                carros.writeInt(RGB);
+                carros.writeInt(Vmin);
+                carros.writeInt(Vmax);
+                carros.writeUTF(tipo);
+                JOptionPane.showMessageDialog(null,"***CUCHAO, EL AUTO A SIDO CREADO EXITOSAMENTE***");
+            }else{
+                JOptionPane.showMessageDialog(null,"!!!ESTE IDENTIFICADOR YA EXISTE!!!");
+            }
+            
+        } catch (IOException e){
+            Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }//GEN-LAST:event_btn_guardarActionPerformed
+
+    private void btn_colorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_colorActionPerformed
+        // TODO add your handling code here:
+        JColorChooser colorChooser = new JColorChooser();
+        color = JColorChooser.showDialog(this, "Escoja un color", Color.white);
+        btn_color.setBackground(color);
+    }//GEN-LAST:event_btn_colorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,4 +231,19 @@ public class Carrera extends javax.swing.JFrame {
     private javax.swing.JTextField tb_numero;
     private javax.swing.JTextField tb_pista;
     // End of variables declaration//GEN-END:variables
+
+    public boolean numeroU(int numero)throws IOException{
+        carros.seek(0);
+        while(carros.getFilePointer()<carros.length()){
+            if(carros.readInt()==numero){
+                return false;
+            }else{
+                carros.skipBytes(8);
+                carros.readUTF();
+                carros.skipBytes(12);
+                carros.readUTF();
+            }
+        }
+        return true;
+    }
 }
