@@ -9,10 +9,12 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author josec
@@ -20,6 +22,7 @@ import javax.swing.JOptionPane;
 public class Carrera extends javax.swing.JFrame {
 
     Color color;
+    boolean selectTabla;
     RandomAccessFile carros;
     public Carrera() {
         try{
@@ -45,7 +48,7 @@ public class Carrera extends javax.swing.JFrame {
         btn_Pausar = new javax.swing.JButton();
         jp_recorrido = new javax.swing.JProgressBar();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
         cb_corredores = new javax.swing.JComboBox<>();
         btn_agregarCorredor = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -72,13 +75,18 @@ public class Carrera extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btn_Comenzar.setText("Comenzar");
+        btn_Comenzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ComenzarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btn_Comenzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 11, -1, -1));
 
         btn_Pausar.setText("Pausar");
         getContentPane().add(btn_Pausar, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 11, -1, -1));
         getContentPane().add(jp_recorrido, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 47, 612, 66));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -86,7 +94,12 @@ public class Carrera extends javax.swing.JFrame {
                 "Identificador", "Corredor", "Distancia"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 131, 612, 117));
 
@@ -225,7 +238,24 @@ public class Carrera extends javax.swing.JFrame {
 
     private void btn_agregarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarCorredorActionPerformed
         // TODO add your handling code here:
+        try{
+            addCarro();
+        }catch(IOException e){
+            Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE, null, e);
+        }
     }//GEN-LAST:event_btn_agregarCorredorActionPerformed
+
+    private void btn_ComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ComenzarActionPerformed
+        // TODO add your handling code here:
+        if(selectTabla){
+            progressBar();
+        }
+    }//GEN-LAST:event_btn_ComenzarActionPerformed
+
+    private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
+        // TODO add your handling code here:
+        selectTabla=true;
+    }//GEN-LAST:event_jTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -281,7 +311,7 @@ public class Carrera extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable;
     private javax.swing.JLabel jl_largo;
     private javax.swing.JLabel jl_pista;
     private javax.swing.JProgressBar jp_recorrido;
@@ -315,6 +345,37 @@ public class Carrera extends javax.swing.JFrame {
             carros.skipBytes(12);
             carros.readUTF();
         }
+    }
+    public void addCarro()throws IOException{
+        DefaultTableModel model=(DefaultTableModel)jTable.getModel();
+        int numero=Integer.parseInt(String.valueOf(cb_corredores.getSelectedItem()));
+        numeroU(numero);
+        long distancia=carros.readLong();
+        String corredor=carros.readUTF();
+        if(!CarroTable(String.valueOf(cb_corredores.getSelectedItem()))){
+            Object[]x ={numero,corredor,distancia};
+        }else{
+            JOptionPane.showMessageDialog(null, "Este Carro ya se encuentra compitiendo");
+        }
+    }
+    public void Distancia(String numero)throws IOException{
+        numeroU(Integer.parseInt(numero));
+        Random r=new Random();
+    }
+    public boolean CarroTable(String numero){
+        int filas=jTable.getRowCount();
+        System.out.println(filas);
+        for(int i=0;i<filas;i++){
+            System.out.println(jTable.getValueAt(i, 0));
+            if(jTable.getValueAt(i, 0)==numero){
+                return true;
+            }
+        }
+        return false;
+    }
+    public void progressBar(){
+        int lista=Integer.parseInt(String.valueOf(jTable.getSelectedRow()));
+        int numero=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,0)));
     }
     
 }
