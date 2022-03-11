@@ -27,18 +27,87 @@ public class Carrera extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        btn_Comenzar = new javax.swing.JButton();
+        btn_Pausar = new javax.swing.JButton();
+        jp_recorrido = new javax.swing.JProgressBar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        cb_corredores = new javax.swing.JComboBox<>();
+        btn_agregarCorredor = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        tb_numero = new javax.swing.JTextField();
+        tb_corredor = new javax.swing.JTextField();
+        btn_color = new javax.swing.JButton();
+        btn_guardar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        tb_pista = new javax.swing.JTextField();
+        tb_largo = new javax.swing.JTextField();
+        btn_pista = new javax.swing.JButton();
+        btn_reiniciar = new javax.swing.JButton();
+        cb_tipo = new javax.swing.JComboBox<>();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btn_Comenzar.setText("Comenzar");
+        getContentPane().add(btn_Comenzar, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 11, -1, -1));
+
+        btn_Pausar.setText("Pausar");
+        getContentPane().add(btn_Pausar, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 11, -1, -1));
+        getContentPane().add(jp_recorrido, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 47, 612, 66));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Identificador", "Corredor", "Distancia"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 131, 612, 117));
+
+        getContentPane().add(cb_corredores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 200, 20));
+
+        btn_agregarCorredor.setText("Agregar");
+        getContentPane().add(btn_agregarCorredor, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, -1, 20));
+
+        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel1.setText("Numero Identificador");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 140, 30));
+
+        jLabel2.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel2.setText("Nombre Corredor");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 120, -1));
+        getContentPane().add(tb_numero, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 320, 120, -1));
+        getContentPane().add(tb_corredor, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 350, 120, -1));
+
+        btn_color.setText("Color");
+        getContentPane().add(btn_color, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 90, -1));
+
+        btn_guardar.setText("Guardar");
+        getContentPane().add(btn_guardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, 90, -1));
+
+        jLabel3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel3.setText("Nombre Pista");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, 110, -1));
+
+        jLabel4.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel4.setText("Largo");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 350, 40, -1));
+        getContentPane().add(tb_pista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 320, 120, -1));
+        getContentPane().add(tb_largo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 120, -1));
+
+        btn_pista.setText("Usar Pista");
+        getContentPane().add(btn_pista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 390, 130, -1));
+
+        btn_reiniciar.setText("Reiniciar");
+        getContentPane().add(btn_reiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 430, 130, -1));
+
+        getContentPane().add(cb_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 110, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -79,5 +148,25 @@ public class Carrera extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Comenzar;
+    private javax.swing.JButton btn_Pausar;
+    private javax.swing.JButton btn_agregarCorredor;
+    private javax.swing.JButton btn_color;
+    private javax.swing.JButton btn_guardar;
+    private javax.swing.JButton btn_pista;
+    private javax.swing.JButton btn_reiniciar;
+    private javax.swing.JComboBox<String> cb_corredores;
+    private javax.swing.JComboBox<String> cb_tipo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JProgressBar jp_recorrido;
+    private javax.swing.JTextField tb_corredor;
+    private javax.swing.JTextField tb_largo;
+    private javax.swing.JTextField tb_numero;
+    private javax.swing.JTextField tb_pista;
     // End of variables declaration//GEN-END:variables
 }
