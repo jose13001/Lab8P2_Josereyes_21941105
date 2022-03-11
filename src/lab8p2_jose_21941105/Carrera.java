@@ -23,16 +23,20 @@ public class Carrera extends javax.swing.JFrame {
 
     Color color;
     boolean selectTabla;
+    boolean selectComenzar;
     RandomAccessFile carros;
     public Carrera() {
+        selectTabla=false;
         try{
             carros=new RandomAccessFile("carros.jc","rw");
-        }catch(FileNotFoundException e){
+            initComponents();
+            this.setVisible(true);
+            this.setLocationRelativeTo(null);
+            llenarComboBox();
+        }catch(IOException e){
             Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
         }
-        initComponents();
-        this.setVisible(true);
-        this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -248,7 +252,11 @@ public class Carrera extends javax.swing.JFrame {
     private void btn_ComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ComenzarActionPerformed
         // TODO add your handling code here:
         if(selectTabla){
-            progressBar();
+            try{
+                selectCar();
+            }catch(IOException e){
+                Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
+            }
         }
     }//GEN-LAST:event_btn_ComenzarActionPerformed
 
@@ -354,6 +362,7 @@ public class Carrera extends javax.swing.JFrame {
         String corredor=carros.readUTF();
         if(!CarroTable(String.valueOf(cb_corredores.getSelectedItem()))){
             Object[]x ={numero,corredor,distancia};
+            model.addRow(x);
         }else{
             JOptionPane.showMessageDialog(null, "Este Carro ya se encuentra compitiendo");
         }
@@ -361,6 +370,12 @@ public class Carrera extends javax.swing.JFrame {
     public void Distancia(String numero)throws IOException{
         numeroU(Integer.parseInt(numero));
         Random r=new Random();
+        carros.skipBytes(8);
+        carros.readUTF();
+        carros.skipBytes(4);
+        int min = carros.readInt();
+        int max = carros.readInt();
+        int distanciaRecorrida = r.nextInt(max-min) + max;
     }
     public boolean CarroTable(String numero){
         int filas=jTable.getRowCount();
@@ -373,9 +388,17 @@ public class Carrera extends javax.swing.JFrame {
         }
         return false;
     }
-    public void progressBar(){
+   
+    
+    public void selectCar()throws IOException{
         int lista=Integer.parseInt(String.valueOf(jTable.getSelectedRow()));
         int numero=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,0)));
+        numeroU(numero);
+        System.out.println(numero);
+        carros.skipBytes(8);
+        carros.readUTF();
+        int color=carros.readInt();
+        jp_recorrido.setBackground(new Color(color));
     }
     
 }
