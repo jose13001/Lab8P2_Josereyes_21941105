@@ -194,6 +194,7 @@ public class Carrera extends javax.swing.JFrame {
                 carros.writeInt(Vmax);
                 carros.writeUTF(tipo);
                 JOptionPane.showMessageDialog(null,"***CUCHAO, EL AUTO A SIDO CREADO EXITOSAMENTE***");
+                llenarComboBox();
             }else{
                 JOptionPane.showMessageDialog(null,"!!!ESTE IDENTIFICADOR YA EXISTE!!!");
             }
@@ -303,6 +304,17 @@ public class Carrera extends javax.swing.JFrame {
             }
         }
         return true;
+    }
+    public void llenarComboBox() throws IOException{
+        cb_corredores.removeAllItems();
+        carros.seek(0);
+        while(carros.getFilePointer()<carros.length()){
+            cb_corredores.addItem(String.valueOf(carros.readInt()));
+            carros.readLong();
+            carros.readUTF();
+            carros.skipBytes(12);
+            carros.readUTF();
+        }
     }
     
 }
