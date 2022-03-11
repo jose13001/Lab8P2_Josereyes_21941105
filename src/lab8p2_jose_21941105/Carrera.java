@@ -61,6 +61,12 @@ public class Carrera extends javax.swing.JFrame {
         btn_pista = new javax.swing.JButton();
         btn_reiniciar = new javax.swing.JButton();
         cb_tipo = new javax.swing.JComboBox<>();
+        jl_pista = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jl_largo = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -87,6 +93,11 @@ public class Carrera extends javax.swing.JFrame {
         getContentPane().add(cb_corredores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 200, 20));
 
         btn_agregarCorredor.setText("Agregar");
+        btn_agregarCorredor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarCorredorActionPerformed(evt);
+            }
+        });
         getContentPane().add(btn_agregarCorredor, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, -1, 20));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -126,6 +137,11 @@ public class Carrera extends javax.swing.JFrame {
         getContentPane().add(tb_largo, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 120, -1));
 
         btn_pista.setText("Usar Pista");
+        btn_pista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_pistaActionPerformed(evt);
+            }
+        });
         getContentPane().add(btn_pista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 390, 130, -1));
 
         btn_reiniciar.setText("Reiniciar");
@@ -133,6 +149,26 @@ public class Carrera extends javax.swing.JFrame {
 
         cb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "McQueen", "Convertible", "Nascar" }));
         getContentPane().add(cb_tipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 110, -1));
+
+        jl_pista.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        getContentPane().add(jl_pista, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 90, 20));
+
+        jSeparator2.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 50, 10));
+
+        jl_largo.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        getContentPane().add(jl_largo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 80, 20));
+
+        jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 50, 10));
+
+        jLabel5.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel5.setText("Pista:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jLabel6.setText("Largo:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -170,9 +206,25 @@ public class Carrera extends javax.swing.JFrame {
     private void btn_colorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_colorActionPerformed
         // TODO add your handling code here:
         JColorChooser colorChooser = new JColorChooser();
-        color = JColorChooser.showDialog(this, "Escoja un color", Color.white);
+        color = JColorChooser.showDialog(this, "Elige un color", Color.white);
         btn_color.setBackground(color);
     }//GEN-LAST:event_btn_colorActionPerformed
+
+    private void btn_pistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pistaActionPerformed
+        // TODO add your handling code here:
+        String pista = tb_pista.getText();
+        long largo=Long.parseLong(tb_largo.getText());
+        if(largo>0){
+            jl_pista.setText(pista);
+            jl_largo.setText(tb_largo.getText());
+        }else{
+            JOptionPane.showMessageDialog(null,"!!!El largo tiene que ser mayor a 0!!!");
+        }
+    }//GEN-LAST:event_btn_pistaActionPerformed
+
+    private void btn_agregarCorredorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarCorredorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_agregarCorredorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,8 +275,14 @@ public class Carrera extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel jl_largo;
+    private javax.swing.JLabel jl_pista;
     private javax.swing.JProgressBar jp_recorrido;
     private javax.swing.JTextField tb_corredor;
     private javax.swing.JTextField tb_largo;
@@ -246,4 +304,5 @@ public class Carrera extends javax.swing.JFrame {
         }
         return true;
     }
+    
 }
