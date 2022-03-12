@@ -24,9 +24,11 @@ public class Carrera extends javax.swing.JFrame {
     Color color;
     boolean selectTabla;
     boolean selectComenzar;
+    boolean ganador;
     RandomAccessFile carros;
     public Carrera() {
         selectTabla=false;
+        ganador=false;
         try{
             carros=new RandomAccessFile("carros.jc","rw");
             initComponents();
@@ -256,16 +258,10 @@ public class Carrera extends javax.swing.JFrame {
 
     private void btn_ComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ComenzarActionPerformed
         // TODO add your handling code here:
-        hilo hilo=new hilo();
-        hilo.start();
+        hilo begin=new hilo();
+        begin.start();
         selectComenzar=true;
-        if(selectTabla){
-            try{
-                selectCar();
-            }catch(IOException e){
-                Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
-            }
-        }
+       
     }//GEN-LAST:event_btn_ComenzarActionPerformed
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
@@ -396,7 +392,12 @@ public class Carrera extends javax.swing.JFrame {
         carros.skipBytes(4);
         int min = carros.readInt();
         int max = carros.readInt();
-        int distanciaRecorrida = r.nextInt(max-min) + max;
+        int distanciaActual = r.nextInt(max-min) + min;
+        int lista =CarList(numero);
+        int distanciaAnterior=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,2)));
+        int distanciaTotal=distanciaActual+distanciaAnterior;
+        jTable.setValueAt(distanciaTotal,lista,2);
+        
     }
     public boolean CarroTable(String numero){
         int filas=jTable.getRowCount();
@@ -408,6 +409,15 @@ public class Carrera extends javax.swing.JFrame {
             }
         }
         return false;
+    }
+    
+    public int CarList(String numero){
+        for(int i=0;i<jTable.getRowCount();i++){
+            if(String.valueOf(jTable.getValueAt(i,0)).equals(numero)){
+                return i;
+            }
+        }
+        return -1;
     }
    
     
@@ -421,11 +431,11 @@ public class Carrera extends javax.swing.JFrame {
         carros.skipBytes(8);
         carros.readUTF();
         int color=carros.readInt();
+        jp_recorrido.setBackground(new Color(color));
         jp_recorrido.setVisible(true);
         jp_recorrido.setValue(distancia);
         jp_recorrido.repaint();
-        jp_recorrido.setBackground(new Color(color));
-        
+           
         }
     }
     class hilo extends Thread{
