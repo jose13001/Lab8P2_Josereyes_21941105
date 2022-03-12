@@ -394,12 +394,12 @@ public class Carrera extends javax.swing.JFrame {
         carros.skipBytes(4);
         int min = carros.readInt();
         int max = carros.readInt();
-        int distanciaActual = r.nextInt(max-min) + min;
+        int distanciaActual = r.nextInt(max-min) + max;
         int lista =CarList(numero);
         int distanciaAnterior=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,2)));
         int distanciaTotal=distanciaActual+distanciaAnterior;
-        
-        if(distanciaTotal>Integer.parseInt(jLabel6.getText())){
+        //jTable.setValueAt(distanciaTotal,lista,2);
+        if(distanciaTotal>Integer.parseInt(jl_largo.getText())){
             ganador=true;
             winner=nombre;
         }
@@ -434,14 +434,15 @@ public class Carrera extends javax.swing.JFrame {
         int numero=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,0)));
         int distancia=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,0)));
         numeroU(numero);
-        System.out.println(numero);
         carros.skipBytes(8);
         carros.readUTF();
         int color=carros.readInt();
+        jp_recorrido.setStringPainted(true);
+        jp_recorrido.repaint();
         jp_recorrido.setBackground(new Color(color));
         jp_recorrido.setVisible(true);
         jp_recorrido.setValue(distancia);
-        jp_recorrido.repaint();
+        
            
         }
     }
