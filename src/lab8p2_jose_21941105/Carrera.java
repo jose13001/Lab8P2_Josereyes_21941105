@@ -162,6 +162,11 @@ public class Carrera extends javax.swing.JFrame {
         getContentPane().add(btn_pista, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 390, 130, -1));
 
         btn_reiniciar.setText("Reiniciar");
+        btn_reiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reiniciarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btn_reiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 430, 130, -1));
 
         cb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "McQueen", "Convertible", "Nascar" }));
@@ -251,6 +256,9 @@ public class Carrera extends javax.swing.JFrame {
 
     private void btn_ComenzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ComenzarActionPerformed
         // TODO add your handling code here:
+        hilo hilo=new hilo();
+        hilo.start();
+        selectComenzar=true;
         if(selectTabla){
             try{
                 selectCar();
@@ -263,7 +271,20 @@ public class Carrera extends javax.swing.JFrame {
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
         // TODO add your handling code here:
         selectTabla=true;
+        if(selectComenzar){
+            try{
+                selectCar();
+            }catch(IOException e){
+                Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
+            }
+        }
     }//GEN-LAST:event_jTableMouseClicked
+
+    private void btn_reiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reiniciarActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel dfl=(DefaultTableModel)jTable.getModel();
+        dfl.setRowCount(0);
+    }//GEN-LAST:event_btn_reiniciarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -392,13 +413,43 @@ public class Carrera extends javax.swing.JFrame {
     
     public void selectCar()throws IOException{
         int lista=Integer.parseInt(String.valueOf(jTable.getSelectedRow()));
+        if(lista!=-1){
         int numero=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,0)));
+        int distancia=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,0)));
         numeroU(numero);
         System.out.println(numero);
         carros.skipBytes(8);
         carros.readUTF();
         int color=carros.readInt();
+        jp_recorrido.setVisible(true);
+        jp_recorrido.setValue(distancia);
+        jp_recorrido.repaint();
         jp_recorrido.setBackground(new Color(color));
+        
+        }
     }
-    
+    class hilo extends Thread{
+        
+        public void run(){
+            while(true){
+                for(int i=0;i<jTable.getRowCount();i++){
+                    try{
+                        String numero=String.valueOf(jTable.getValueAt(i,0));
+                        Distancia(numero);
+                        selectCar();
+                        
+                        try{
+                            Thread.sleep(1000);
+                        }catch(InterruptedException e){
+                            e.printStackTrace();
+                        }
+                    }catch(IOException e){
+                        Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
+                    }
+                }
+            }
+        }
+        
+     
+    }
 }
