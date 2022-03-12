@@ -26,6 +26,7 @@ public class Carrera extends javax.swing.JFrame {
     boolean selectComenzar;
     boolean ganador;
     RandomAccessFile carros;
+    String winner;
     public Carrera() {
         selectTabla=false;
         ganador=false;
@@ -266,7 +267,7 @@ public class Carrera extends javax.swing.JFrame {
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
         // TODO add your handling code here:
-        selectTabla=true;
+        
         if(selectComenzar){
             try{
                 selectCar();
@@ -280,6 +281,7 @@ public class Carrera extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel dfl=(DefaultTableModel)jTable.getModel();
         dfl.setRowCount(0);
+        jp_recorrido.setValue(0);
     }//GEN-LAST:event_btn_reiniciarActionPerformed
 
     /**
@@ -388,7 +390,7 @@ public class Carrera extends javax.swing.JFrame {
         numeroU(Integer.parseInt(numero));
         Random r=new Random();
         carros.skipBytes(8);
-        carros.readUTF();
+        String nombre=carros.readUTF();
         carros.skipBytes(4);
         int min = carros.readInt();
         int max = carros.readInt();
@@ -396,6 +398,11 @@ public class Carrera extends javax.swing.JFrame {
         int lista =CarList(numero);
         int distanciaAnterior=Integer.parseInt(String.valueOf(jTable.getValueAt(lista,2)));
         int distanciaTotal=distanciaActual+distanciaAnterior;
+        
+        if(distanciaTotal>Integer.parseInt(jLabel6.getText())){
+            ganador=true;
+            winner=nombre;
+        }
         jTable.setValueAt(distanciaTotal,lista,2);
         
     }
@@ -441,22 +448,30 @@ public class Carrera extends javax.swing.JFrame {
     class hilo extends Thread{
         
         public void run(){
-            while(true){
+            try{
+            while(!ganador){
                 for(int i=0;i<jTable.getRowCount();i++){
-                    try{
-                        String numero=String.valueOf(jTable.getValueAt(i,0));
-                        Distancia(numero);
-                        selectCar();
+                    
+                    String numero=String.valueOf(jTable.getValueAt(i,0));
+                    Distancia(numero);
+                    selectCar();
+                }
+                   
                         
                         try{
                             Thread.sleep(1000);
                         }catch(InterruptedException e){
                             e.printStackTrace();
                         }
-                    }catch(IOException e){
-                        Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
-                    }
+                    
+                    
                 }
+            JOptionPane.showMessageDialog(null, winner+" gano");
+            
+            
+            }catch(IOException e){
+                Logger.getLogger(Carrera.class.getName()).log(Level.SEVERE,null,e);
+
             }
         }
         
